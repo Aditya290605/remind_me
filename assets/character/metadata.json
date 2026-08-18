@@ -1,0 +1,140 @@
+{
+  "group_id": "387332a9-d86c-4c7a-b646-bc9c62950879",
+  "states": [
+    {
+      "character": {
+        "id": "d95dd558-a4ec-4e96-9cfb-910527906246",
+        "name": "Idle",
+        "prompt": "A cute chibi pixel art ninja character for a desktop reminder app. Dark charcoal gray ninja outfit with hood and face mask covering  lower face. Big expressive dark eyes with small eyebrows visible.  Brown leather strap/belt across chest. Katana sword on back with  brown wooden handle. Dark gray boots. Compact adorable chibi  proportions with oversized head. Clean pixel art style with subtle  shading. Friendly and cool aesthetic.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-08-18T11:18:05.464886+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Jumping": {
+            "south": [
+              "Idle/animations/Jumping/south/frame_000.png",
+              "Idle/animations/Jumping/south/frame_001.png",
+              "Idle/animations/Jumping/south/frame_002.png",
+              "Idle/animations/Jumping/south/frame_003.png",
+              "Idle/animations/Jumping/south/frame_004.png",
+              "Idle/animations/Jumping/south/frame_005.png",
+              "Idle/animations/Jumping/south/frame_006.png",
+              "Idle/animations/Jumping/south/frame_007.png",
+              "Idle/animations/Jumping/south/frame_008.png"
+            ]
+          },
+          "Jumping-2a04008c": {
+            "west": [
+              "Idle/animations/Jumping-2a04008c/west/frame_000.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_001.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_002.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_003.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_004.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_005.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_006.png",
+              "Idle/animations/Jumping-2a04008c/west/frame_007.png"
+            ],
+            "east": [
+              "Idle/animations/Jumping-2a04008c/east/frame_000.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_001.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_002.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_003.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_004.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_005.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_006.png",
+              "Idle/animations/Jumping-2a04008c/east/frame_007.png"
+            ]
+          },
+          "Backflip": {
+            "east": [
+              "Idle/animations/Backflip/east/frame_000.png",
+              "Idle/animations/Backflip/east/frame_001.png",
+              "Idle/animations/Backflip/east/frame_002.png",
+              "Idle/animations/Backflip/east/frame_003.png",
+              "Idle/animations/Backflip/east/frame_004.png",
+              "Idle/animations/Backflip/east/frame_005.png",
+              "Idle/animations/Backflip/east/frame_006.png",
+              "Idle/animations/Backflip/east/frame_007.png",
+              "Idle/animations/Backflip/east/frame_008.png",
+              "Idle/animations/Backflip/east/frame_009.png"
+            ],
+            "west": [
+              "Idle/animations/Backflip/west/frame_000.png",
+              "Idle/animations/Backflip/west/frame_001.png",
+              "Idle/animations/Backflip/west/frame_002.png",
+              "Idle/animations/Backflip/west/frame_003.png",
+              "Idle/animations/Backflip/west/frame_004.png",
+              "Idle/animations/Backflip/west/frame_005.png",
+              "Idle/animations/Backflip/west/frame_006.png",
+              "Idle/animations/Backflip/west/frame_007.png",
+              "Idle/animations/Backflip/west/frame_008.png",
+              "Idle/animations/Backflip/west/frame_009.png"
+            ]
+          },
+          "Front_Flip": {
+            "south": [
+              "Idle/animations/Front_Flip/south/frame_000.png",
+              "Idle/animations/Front_Flip/south/frame_001.png",
+              "Idle/animations/Front_Flip/south/frame_002.png",
+              "Idle/animations/Front_Flip/south/frame_003.png",
+              "Idle/animations/Front_Flip/south/frame_004.png",
+              "Idle/animations/Front_Flip/south/frame_005.png"
+            ]
+          },
+          "Running": {
+            "east": [
+              "Idle/animations/Running/east/frame_000.png",
+              "Idle/animations/Running/east/frame_001.png",
+              "Idle/animations/Running/east/frame_002.png",
+              "Idle/animations/Running/east/frame_003.png"
+            ],
+            "west": [
+              "Idle/animations/Running/west/frame_000.png",
+              "Idle/animations/Running/west/frame_001.png",
+              "Idle/animations/Running/west/frame_002.png",
+              "Idle/animations/Running/west/frame_003.png"
+            ]
+          },
+          "Front_Flip-f0c316b1": {
+            "east": [
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_000.png",
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_001.png",
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_002.png",
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_003.png",
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_004.png",
+              "Idle/animations/Front_Flip-f0c316b1/east/frame_005.png"
+            ],
+            "west": [
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_000.png",
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_001.png",
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_002.png",
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_003.png",
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_004.png",
+              "Idle/animations/Front_Flip-f0c316b1/west/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-18T11:52:12.133769"
+}
