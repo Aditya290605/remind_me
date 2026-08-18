@@ -1,0 +1,122 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  pointer-events: none;
+}
+
+.character-container {
+  position: absolute;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.character-img {
+  width: 180px;
+  height: auto;
+  image-rendering: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+/* Walking bob animation */
+@keyframes walkBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.walking .character-img {
+  animation: walkBob 0.4s ease-in-out infinite;
+}
+
+/* --- Speech Bubble --- */
+.speech-bubble {
+  position: relative;
+  background: linear-gradient(145deg, rgba(40, 25, 70, 0.92), rgba(30, 18, 55, 0.95));
+  border: 1px solid rgba(180, 140, 255, 0.25);
+  border-radius: 16px;
+  padding: 14px 20px;
+  margin-bottom: 12px;
+  max-width: 320px;
+  min-width: 120px;
+  opacity: 0;
+  transform: scale(0.8) translateY(10px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(160, 100, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(35, 22, 62, 0.93);
+}
+
+.speech-bubble.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.speech-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(235, 215, 255, 0.95);
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+}
+
+/* --- Slide animations --- */
+@keyframes slideInFromLeft {
+  from { transform: translateX(-300px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutToLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-300px); opacity: 0; }
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(300px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutToRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(300px); opacity: 0; }
+}
+
+/* Gentle idle sway when standing */
+@keyframes idleSway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+
+.idle .character-img {
+  animation: idleSway 2s ease-in-out infinite;
+}

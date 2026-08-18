@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remind Me</title>
+  <link rel="stylesheet" href="task-window.css">
+</head>
+<body>
+  <div class="window">
+    <div class="titlebar" id="titlebar">
+      <span class="titlebar-text">✨ Remind Me</span>
+      <button class="titlebar-btn close-btn" id="close-btn">×</button>
+    </div>
+
+    <div class="content">
+      <div class="add-section">
+        <input type="text" id="task-input" placeholder="What should I remind you?" maxlength="120" autocomplete="off">
+        <input type="datetime-local" id="time-input">
+        <button id="add-btn">
+          <span class="btn-icon">＋</span> Add Reminder
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="tasks-section">
+        <h3 class="section-title">Upcoming</h3>
+        <div id="task-list" class="task-list">
+          <div class="empty-state">No reminders yet ✨</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="task-window.js"></script>
+</body>
+</html>

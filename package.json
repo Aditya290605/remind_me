@@ -1,0 +1,12 @@
+{
+  "name": "remind-me",
+  "version": "1.0.0",
+  "description": "Cute anime character desktop reminder",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^35.0.0"
+  }
+}
