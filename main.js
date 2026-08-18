@@ -63,6 +63,7 @@ function showOverlay(text) {
     height,
     x: 0,
     y: 0,
+    show: false,
     transparent: true,
     frame: false,
     alwaysOnTop: true,
@@ -81,6 +82,7 @@ function showOverlay(text) {
   }
   overlayWindow.loadFile('overlay.html');
   overlayWindow.webContents.on('did-finish-load', () => {
+    overlayWindow.showInactive(); // show without activating app / stealing focus
     overlayWindow.webContents.send('show-reminder', text);
   });
 }
@@ -177,10 +179,13 @@ ipcMain.on('close-task-window', () => {
 
 // --- App lifecycle ---
 app.whenReady().then(() => {
+  // Hide dock icon on Mac — pure tray app, no dock/taskbar popups
+  if (process.platform === 'darwin') app.dock.hide();
+
   loadTasks();
   createTray();
   scheduleAll();
-  createTaskWindow();
+  // Don't auto-open task window — user opens via tray icon click
 });
 
 app.on('window-all-closed', (e) => {
