@@ -6,7 +6,7 @@ const speechText = document.getElementById('speech-text');
 
 const CHAR_BASE = 'assets/character/Idle';
 const FRAME_SIZE = 48;
-const BOTTOM_CLEARANCE = 120; // px from bottom edge — clears dock/taskbar
+const BOTTOM_CLEARANCE = 120;
 
 // --- Asset loader ---
 const imageCache = {};
@@ -25,16 +25,15 @@ function drawFrame(img) {
   ctx.drawImage(img, 0, 0, FRAME_SIZE, FRAME_SIZE);
 }
 
-// --- Preload all needed assets ---
+// --- Preload ---
 async function preloadAll(entryDir, exitDir) {
   const paths = [];
-
   for (let i = 0; i < 4; i++) paths.push(`${CHAR_BASE}/animations/Running/${entryDir}/frame_00${i}.png`);
-  for (let i = 0; i < 6; i++) paths.push(`${CHAR_BASE}/animations/Front_Flip-f0c316b1/${entryDir}/frame_00${i}.png`);
-  paths.push(`${CHAR_BASE}/rotations/south.png`);
-  for (let i = 0; i < 10; i++) paths.push(`${CHAR_BASE}/animations/Backflip/${exitDir}/frame_00${i}.png`);
   for (let i = 0; i < 4; i++) paths.push(`${CHAR_BASE}/animations/Running/${exitDir}/frame_00${i}.png`);
-
+  for (let i = 0; i < 6; i++) paths.push(`${CHAR_BASE}/animations/Front_Flip-f0c316b1/${entryDir}/frame_00${i}.png`);
+  for (let i = 0; i < 6; i++) paths.push(`${CHAR_BASE}/animations/Front_Flip-f0c316b1/${exitDir}/frame_00${i}.png`);
+  paths.push(`${CHAR_BASE}/rotations/south.png`);
+  paths.push(`${CHAR_BASE}/rotations/${exitDir}.png`);
   await Promise.all(paths.map(loadImage));
 }
 
@@ -63,58 +62,50 @@ function playChime() {
   } catch { /* silent */ }
 }
 
-// --- Helper: set position ---
 function setPos(x, bottomY) {
   container.style.left = x + 'px';
   container.style.bottom = bottomY + 'px';
 }
 
-// --- Phase: Run across screen with real footstep bounce ---
-function runAcross(startX, endX, entryDir, fps) {
-  const runFrames = getFrames('Running', entryDir, 4);
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+// --- Run with bounce (constant speed, looping run frames) ---
+function runAcross(startX, endX, dir, fps) {
+  const runFrames = getFrames('Running', dir, 4);
   const frameInterval = 1000 / fps;
-  const speed = 350; // px per second — constant speed = natural run
+  const speed = 350;
   const distance = Math.abs(endX - startX);
   const duration = (distance / speed) * 1000;
-  const direction = endX > startX ? 1 : -1;
-  const bounceHeight = 5; // px
+  const bounceHeight = 5;
 
   return new Promise(resolve => {
     const t0 = performance.now();
-    let lastFrameSwap = 0;
+    let lastSwap = 0;
     let frameIdx = 0;
 
     function tick(now) {
       const elapsed = now - t0;
       const progress = Math.min(elapsed / duration, 1);
-
-      // Constant speed movement (linear) — feels like real running
       const x = startX + (endX - startX) * progress;
-
-      // Bounce synced to run frame cycle (4 frames per cycle)
-      // One full bounce per 2 frames (each "step")
-      const cycleProgress = (elapsed % (frameInterval * 4)) / (frameInterval * 4);
-      const bounce = Math.abs(Math.sin(cycleProgress * Math.PI * 2)) * bounceHeight;
-
+      const cycleMs = frameInterval * 4;
+      const bounce = Math.abs(Math.sin(((elapsed % cycleMs) / cycleMs) * Math.PI * 2)) * bounceHeight;
       setPos(x, BOTTOM_CLEARANCE + bounce);
 
-      // Swap sprite frames
-      if (now - lastFrameSwap >= frameInterval) {
+      if (now - lastSwap >= frameInterval) {
         drawFrame(runFrames[frameIdx % 4]);
         frameIdx++;
-        lastFrameSwap = now;
+        lastSwap = now;
       }
 
       if (progress < 1) requestAnimationFrame(tick);
       else resolve();
     }
-
     requestAnimationFrame(tick);
   });
 }
 
-// --- Phase: Play animation once (flip/backflip) with optional Y arc ---
-function playOnce(frames, fps, arcHeight) {
+// --- Play animation once with optional jump arc and optional X movement ---
+function playOnce(frames, fps, arcHeight, startX, endX) {
   const interval = 1000 / fps;
   const totalDuration = frames.length * interval;
   arcHeight = arcHeight || 0;
@@ -128,10 +119,15 @@ function playOnce(frames, fps, arcHeight) {
       const elapsed = now - t0;
       const progress = Math.min(elapsed / totalDuration, 1);
 
-      // Y arc during flip (parabolic: up then down)
       if (arcHeight) {
         const arc = Math.sin(progress * Math.PI) * arcHeight;
         container.style.bottom = (BOTTOM_CLEARANCE + arc) + 'px';
+      }
+
+      // Optional horizontal drift during flip
+      if (startX !== undefined && endX !== undefined) {
+        const x = startX + (endX - startX) * progress;
+        container.style.left = x + 'px';
       }
 
       if (now - lastSwap >= interval) {
@@ -145,45 +141,44 @@ function playOnce(frames, fps, arcHeight) {
       if (frameIdx < frames.length || progress < 1) requestAnimationFrame(tick);
       else resolve();
     }
-
     requestAnimationFrame(tick);
   });
 }
-
-// --- Helper: wait ms ---
-const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
 // ============================================
 // MAIN SEQUENCE
 // ============================================
 async function showReminder(text) {
-  const fromLeft = Math.random() > 0.5;
-  const entryDir = fromLeft ? 'east' : 'west';
-  const exitDir = fromLeft ? 'west' : 'east';
+  // Pick random edge — ninja comes AND goes from the SAME side
+  const fromRight = Math.random() > 0.5;
+
+  // Directions: entryDir = direction ninja FACES while running in
+  // fromRight: ninja runs leftward (faces west), exits rightward (faces east)
+  // fromLeft:  ninja runs rightward (faces east), exits leftward (faces west)
+  const entryDir = fromRight ? 'west' : 'east';
+  const exitDir = fromRight ? 'east' : 'west';
 
   await preloadAll(entryDir, exitDir);
 
   const screenW = window.innerWidth;
+  const edgeX = fromRight ? screenW + 20 : -160;
   const targetX = (screenW / 2) - 72 + (Math.random() - 0.5) * 160;
-  const startX = fromLeft ? -160 : screenW + 20;
 
-  // Position off-screen, make visible
-  setPos(startX, BOTTOM_CLEARANCE);
+  setPos(edgeX, BOTTOM_CLEARANCE);
   container.style.opacity = '1';
 
   playChime();
 
-  // 1) RUN IN — constant speed, bouncing footsteps
-  await runAcross(startX, targetX, entryDir, 10);
+  // 1) RUN IN from edge to near center
+  await runAcross(edgeX, targetX, entryDir, 10);
 
-  // 2) FRONT FLIP on arrival — with jump arc
-  const flipFrames = getFrames('Front_Flip-f0c316b1', entryDir, 6);
-  await playOnce(flipFrames, 12, 40);
+  // 2) FRONT FLIP on arrival (facing entry direction) — with jump arc
+  const entryFlipFrames = getFrames('Front_Flip-f0c316b1', entryDir, 6);
+  await playOnce(entryFlipFrames, 12, 75);
 
-  // 3) LAND — snap to ground, show south-facing idle
+  // 3) LAND — face the user (south)
   setPos(targetX, BOTTOM_CLEARANCE);
-  const southImg = imageCache[`${CHAR_BASE}/rotations/south.png`];
-  drawFrame(southImg);
+  drawFrame(imageCache[`${CHAR_BASE}/rotations/south.png`]);
 
   // 4) SPEECH BUBBLE
   speechText.textContent = text;
@@ -196,17 +191,20 @@ async function showReminder(text) {
   speechBubble.classList.remove('visible');
   await wait(400);
 
-  // 5) BACKFLIP before exit — with jump arc
-  const backflipFrames = getFrames('Backflip', exitDir, 10);
-  await playOnce(backflipFrames, 12, 35);
+  // 5) TURN to face exit direction
+  drawFrame(imageCache[`${CHAR_BASE}/rotations/${exitDir}.png`]);
+  await wait(200);
 
-  // 6) RUN OUT — constant speed, bouncing
-  const exitX = fromLeft ? screenW + 20 : -160;
-  setPos(targetX, BOTTOM_CLEARANCE);
+  // 6) RUN BACK toward same edge
+  const runEndX = fromRight ? screenW - 250 : 100;
+  await runAcross(targetX, runEndX, exitDir, 10);
 
-  await runAcross(targetX, exitX, exitDir, 10);
+  // 7) FRONT FLIP out at the edge — with arc + drift off screen
+  const exitFlipFrames = getFrames('Front_Flip-f0c316b1', exitDir, 6);
+  await playOnce(exitFlipFrames, 12, 65, runEndX, edgeX);
 
-  // Done
+  // 8) Gone
+  container.style.opacity = '0';
   window.remindMe.overlayDone();
 }
 
