@@ -9,6 +9,11 @@
   <i>Runs quietly in your system tray. When a timer hits, an animated ninja leaps onto your screen, delivers your reminder, and flips away.</i>
 </p>
 
+<p align="center">
+  <a href="https://github.com/Aditya290605/remind_me/releases/latest"><img src="https://img.shields.io/badge/Download-macOS%20(.dmg)-black?style=for-the-badge&logo=apple" alt="Download macOS" /></a>
+  <a href="https://github.com/Aditya290605/remind_me/releases/latest"><img src="https://img.shields.io/badge/Download-Windows%20(.exe)-0078D6?style=for-the-badge&logo=windows" alt="Download Windows" /></a>
+</p>
+
 ---
 
 ## 🥷 Features
@@ -23,29 +28,17 @@
 
 ---
 
-## 🚀 Quick Start
+## 📥 Downloads & Installation
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- `npm`
+### 🍏 For macOS:
+1. Download **`Remind Me-1.0.0-arm64.dmg`** from [Releases](https://github.com/Aditya290605/remind_me/releases/latest).
+2. Open the `.dmg` file and drag **Remind Me** into your **Applications** folder.
+3. Open **Remind Me** from Applications. The ninja icon will appear in your top menu bar.
 
-### Installation & Run
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Aditya290605/remind_me.git
-   cd remind_me
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Launch the application:**
-   ```bash
-   npm start
-   ```
+### 🪟 For Windows:
+1. Download **`Remind Me Setup 1.0.0.exe`** from [Releases](https://github.com/Aditya290605/remind_me/releases/latest).
+2. Double-click the installer and follow the setup wizard.
+3. The ninja icon will appear in your system tray (bottom-right).
 
 ---
 
@@ -64,6 +57,26 @@
 
 ---
 
+## 🛠️ For Developers (Run from Source)
+
+```bash
+# Clone the repository
+git clone https://github.com/Aditya290605/remind_me.git
+cd remind_me
+
+# Install dependencies
+npm install
+
+# Run locally in development
+npm start
+
+# Build standalone installers (.dmg & .exe)
+npm run build:mac   # Builds .dmg in dist/
+npm run build:win   # Builds .exe in dist/
+```
+
+---
+
 ## 📁 Project Structure
 
 ```text
@@ -79,25 +92,11 @@ remind_me/
 ├── overlay.html               # Transparent reminder canvas markup
 ├── overlay.css                # Speech bubble styling & canvas layout
 ├── overlay.js                 # Frame-by-frame animation & audio engine
-└── package.json               # App configuration & scripts
-```
-
----
-
-## 📦 Packaging for Distribution (Optional)
-
-To package **Remind Me** as an installer (`.dmg` for Mac, `.exe` for Windows):
-
-```bash
-# Install electron-builder
-npm install --save-dev electron-builder
-
-# Build for your platform
-npx electron-builder
+└── package.json               # App configuration & electron-builder settings
 ```
 
 ---
 
 ## 📜 License
 
-MIT License. Feel free to use and customize!
+MIT License. Free to use and share!
